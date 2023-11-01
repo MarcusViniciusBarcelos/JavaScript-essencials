@@ -66,7 +66,7 @@ function esperaAiPromise(msg, tempo) {
           console.log(resposta);
           return esperaAiPromise('Frase 2', aleatorio(1, 3));
       })
-      
+
     // para testar o reject, basta passar um valor diferente de string para o primeiro parametro da função esperaAiPromise
     .then(resposta => {
         console.log(resposta);
@@ -108,4 +108,107 @@ console.log('Isso aqui será exibido antes de qualquer frase.');
  * 3 - Podemos encadear várias promises, utilizando o método then(), melhorando a legibilidade do código.
  * 4 - Podemos utilizar o método Promise.all() para executar várias promises ao mesmo tempo.
  * 5 - introduz  os estados de uma promise: pending, fulfilled e rejected, que nos ajudam a saber o que está acontecendo com a promise, se ela está em execução, se foi concluída com sucesso ou se falhou.
- */
+ * 
+*/
+
+// metodos de promises
+
+// Promise.all()
+
+// Exemplo:
+
+const promises = [
+    'Primeiro valor',
+    esperaAiPromise('Promise 1', 3000),
+    esperaAiPromise('Promise 2', 500),
+    esperaAiPromise('Promise 3', 1000),
+    'Outro valor'
+];
+
+
+Promise.all(promises)
+    .then((valor) => {
+        console.log(valor);
+    })
+    .catch((erro) => {
+        console.log(erro);
+    });
+
+// O método Promise.all() recebe um array de promises como parâmetro e retorna uma nova promise.
+// A nova promise é concluída quando todas as promises do array são concluídas.
+// O método Promise.all() retorna um array com os valores de cada promise.
+// O método Promise.all() retorna um array vazio se uma das promises falhar.
+// O método Promise.all() retorna uma promise rejeitada se um dos parâmetros não for uma promise.
+
+// Promise.race()
+
+// Exemplo:
+
+const promises2 = [
+    esperaAiPromise('Promise 1', 3000),
+    esperaAiPromise('Promise 2', 500),
+    esperaAiPromise('Promise 3', 1000)
+];
+
+Promise.race(promises2)
+    .then((valor) => {
+        console.log(valor);
+    })
+    .catch((erro) => {
+        console.log(erro);
+    });
+
+// o metodo Promise.race() recebe um array de promises como parametro e retorna uma nova promise.
+// o metodo Promise.race() retorna a primeira promise que for concluida.
+// retorna uma promise rejeitada se a primeira promise que for concluida falhar.
+
+
+
+// Promise.resolve()
+
+// Exemplo:
+
+function baixaPagina() {
+    const emCache = true;
+
+    if(emCache) {
+        return Promise.resolve('Página em cache');
+    } else {
+        return esperaAiPromise('Baixei a página', 3000);
+    }
+}
+
+baixaPagina()
+    .then(dadosPagina => {
+        console.log(dadosPagina);
+    })
+    .catch(e => console.log(e));
+
+// o metodo Promise.resolve() retorna uma promise resolvida.
+// o metodo Promise.resolve() pode receber um valor, uma promise, um thenable ou um objeto  como parametro.
+// é útil quando queremos retornar uma promise resolvida, sem precisar criar uma nova promise, como fizemos no exemplo acima.
+
+
+// Promise.reject()
+
+// Exemplo:
+
+function baixaPagina2() {
+    const emCache = true;
+
+    if(emCache) {
+        return Promise.reject('Página em cache');
+    } else {
+        return esperaAiPromise('Baixei a página', 3000);
+    }
+}
+
+baixaPagina2()
+    .then(dadosPagina => {
+        console.log(dadosPagina);
+    })
+    .catch(e => console.log('ERRO', e));
+
+// o metodo Promise.reject() retorna uma promise rejeitada.
+// o metodo Promise.resolve() pode receber um valor, uma promise, um thenable ou um objeto  como parametro.
+// é util quando queremos retornar uma promise rejeitada, sem precisar criar uma nova promise, como fizemos no exemplo acima.
